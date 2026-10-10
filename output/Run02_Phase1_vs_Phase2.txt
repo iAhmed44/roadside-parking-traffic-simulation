@@ -1,0 +1,18 @@
+=== Run02 - Phase 1 vs Phase 2 ===
+Seed: 1   Cycles: 4000   Lanes: 2   Length: 70   Parking spots: 5
+
+Shared traffic scenario (recorded in Phase 1, replayed in Phase 2):
+  Recorded cars: 3574  (parking seekers: 3186)   emergencies: 0   over 4000 ticks
+  Scenario signature: 0x97F82B902FBDF244   (identical = identical scenario)
+
+Metric                            Phase 1        Phase 2
+--------------------------     ----------     ----------
+Total waiting-cycles                 4236              0
+Average speed                        8.08          11.27
+Average congestion                 0.2881         0.3050
+Cars processed                        288            431
+Redirected cars                        75            208
+Avg parking usage                   95.4%          99.2%
+
+Improvement percentage (waiting): 100.0%
+RESULT: Phase 2 reduced total waiting-cycles on the same recorded scenario.

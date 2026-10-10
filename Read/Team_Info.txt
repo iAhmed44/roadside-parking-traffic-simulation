@@ -1,0 +1,18 @@
+EE364 Phase 1 Project Team Information
+
+Project Name:
+Roadside Parking Traffic Simulation
+
+Team Members:
+
+1. Ahmed Abdul Latif Al-Ghamdi
+   Student ID: 2237826
+
+2. Ahmed Abdullah Al-Ghamdi
+   Student ID: 2339540
+
+3. Ryan Khaled Abdul-Jabbar
+   Student ID: 2238374
+
+4. Alwaleed Al-Malki
+   Student ID: 2336515

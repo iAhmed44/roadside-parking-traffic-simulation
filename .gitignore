@@ -1,0 +1,12 @@
+# Compiled files and local JavaFX SDK
+out/
+lib/
+*.class
+sources.txt
+
+# Local IDE and operating-system files
+.idea/
+*.iml
+.vscode/
+.DS_Store
+Thumbs.db

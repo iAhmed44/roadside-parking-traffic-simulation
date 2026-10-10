@@ -1,0 +1,18 @@
+=== Phase 2 Run Output ===
+Phase 2 (managed parking: reservations + early redirect + police)
+
+Configuration : 2 lanes, length 70, 5 parking spots
+Cycles        : 4000
+
+Shared traffic scenario (recorded in Phase 1, replayed in Phase 2):
+  Recorded cars: 3585  (parking seekers: 3257)   emergencies: 0   over 4000 ticks
+  Scenario signature: 0x4F1AFE03F8BFD2D0   (identical signature = identical scenario)
+
+Total waiting-cycles : 0
+Average speed        : 11.29
+Average congestion   : 0.3050
+Cars processed       : 432
+Redirected cars      : 204
+Avg parking usage    : 98.6% (0/5 spots free at end)
+Police warnings issued: 6
+Camera fines issued   : 5

@@ -1,0 +1,124 @@
+EE364 Team 1 - OOP Concepts Map (Interface, Inheritance, Polymorphism)
+======================================================================
+This note shows EXACTLY where each OOP concept is used, with file + line
+numbers, so they are easy to point to during grading / the viva.
+All paths are under src/ .
+
+--------------------------------------------------------------------
+1) INTERFACES  (2 interfaces, both really used)
+--------------------------------------------------------------------
+
+A) Movable  ->  src/traffic/interfaces/Movable.java
+   - interface declared .................... Movable.java:12
+   - method  void move() .................... Movable.java:15
+   - method  void stop() .................... Movable.java:18
+   Implemented by:
+   - Vehicle implements Movable ............ Vehicle.java:9    (abstract base class)
+       provides stop() (concrete) .......... Vehicle.java:66-68
+       leaves move() abstract .............. Vehicle.java:63
+   Used THROUGH the interface type (programming-to-the-interface):
+   - static void halt(Movable movable) ..... Simulation.java:776
+       (calls movable.stop() via the interface, not a concrete class;
+        used at the parking-full and accident-ahead stop sites)
+
+B) Reservable  ->  src/traffic/interfaces/Reservable.java
+   - interface declared .................... Reservable.java:19
+   - method  boolean reserve(Object owner) . Reservable.java:22
+   - method  void release() ................ Reservable.java:25
+   - method  boolean isReserved() .......... Reservable.java:28
+   Implemented by:
+   - ParkingSpot implements Reservable ..... ParkingSpot.java:14
+       reserve()    override ............... ParkingSpot.java:88-89
+       release()    override ............... ParkingSpot.java:100-101
+       isReserved() override ............... ParkingSpot.java:106-107
+   Used through the interface behaviour by the Phase 2 brain TrafficController:
+   - newSpot.reserve(car) .................. TrafficController.java:218
+   - current.release() .................... TrafficController.java:222, 235, 253, 334
+   - spot.isReserved() .................... TrafficController.java:249, 273
+   - spot.getReservedBy() ................. TrafficController.java:234, 245, 333
+
+--------------------------------------------------------------------
+2) INHERITANCE  (3-level class hierarchy)
+--------------------------------------------------------------------
+
+        Movable (interface)
+            ^ implements
+        Vehicle (abstract) .................... Vehicle.java:9
+          |
+          +-- Car extends Vehicle ............. Car.java:9
+          |
+          +-- EmergencyVehicle extends Vehicle  EmergencyVehicle.java:8
+                  |
+                  +-- PoliceVehicle extends EmergencyVehicle ... PoliceVehicle.java:10
+
+   Abstract class + abstract method:
+   - abstract class Vehicle ................ Vehicle.java:9
+   - public abstract void move() .......... Vehicle.java:63
+
+   Method overriding (@Override):
+   - Vehicle.stop() overrides Movable.stop() ........ Vehicle.java:66-68
+   - Car.move() overrides Vehicle.move() ............ Car.java:65-66
+   - EmergencyVehicle.move() overrides Vehicle.move()  EmergencyVehicle.java:24-25
+   - Car.tickVisualMarkers() overrides Vehicle's ..... Car.java:108-109
+        and extends it with: super.tickVisualMarkers() Car.java:110
+
+   Constructor chaining (super(...)):
+   - Car            -> super(id) .................... Car.java:50
+   - EmergencyVehicle -> super(id) .................. EmergencyVehicle.java:17
+   - PoliceVehicle  -> super(id, "POLICE") ......... PoliceVehicle.java:13
+
+   Inherited state/behaviour:
+   - Car and EmergencyVehicle reuse Vehicle's position/speed/state fields and
+     methods (stop(), the getters, beginStep(), etc.).
+
+--------------------------------------------------------------------
+3) POLYMORPHISM
+--------------------------------------------------------------------
+
+a) Subtype polymorphism via base-type collections
+   - Lane stores List<Vehicle> ............ Lane.java:15  (and getter Lane.java:74)
+   - Street.allVehicles() : List<Vehicle> .. Street.java:102
+     (Car / EmergencyVehicle / PoliceVehicle are all handled as Vehicle)
+
+b) Dynamic dispatch via base-type loops (the right override runs)
+   - for (Vehicle vehicle : street.allVehicles()) vehicle.beginStep();
+       ................................... Simulation.java:162-163
+   - for (Vehicle vehicle : street.allVehicles()) vehicle.tickVisualMarkers();
+       ................................... Simulation.java:1367-1368
+     -> for a Car this runs Car's overridden tickVisualMarkers(); for other
+        vehicles it runs the base Vehicle version.
+   - move() resolves at runtime to Car.move() / EmergencyVehicle.move().
+
+c) Interface polymorphism
+   - halt(Movable) accepts ANY Movable .... Simulation.java:776
+
+d) Runtime type checks (instanceof pattern matching) - behaviour by subtype
+   - moveAllVehicles: if (v instanceof Car c) ... else if (v instanceof
+       EmergencyVehicle e) ............... Simulation.java:551, 553
+   - hasPoliceVehicle: loop with (vehicle instanceof PoliceVehicle) . Simulation.java:382
+   - anyEmergencyOnStreet: loop with (vehicle instanceof EmergencyVehicle) Simulation.java:458
+   - processEmergencyMovement: ev instanceof PoliceVehicle ? POLICE_SPEED
+       : EMERGENCY_SPEED ................. Simulation.java:1128
+   - GUI KPI counts: v instanceof Car / EmergencyVehicle / PoliceVehicle
+       ................................... TrafficFxApp.java:439, 455
+   - GUI markers + sprites by subtype ... StreetCanvasRenderer.java (instanceof
+       blocks for PoliceVehicle / EmergencyVehicle / Car), FxVehicleImageCatalog
+   - ParkingSpot.reserve guards owner type: if (!(owner instanceof Car))
+       ................................... ParkingSpot.java:92
+
+--------------------------------------------------------------------
+4) ENCAPSULATION  (supporting OOP principle)
+--------------------------------------------------------------------
+   - Model classes keep fields private and expose getters/setters.
+   - Lane.getVehiclesInLane() and Street.getLanes()/getParkingSpots() return
+     Collections.unmodifiableList(...) so callers cannot mutate the internals
+     directly ............................ Lane.java:74, Street.java getLanes/getParkingSpots
+
+--------------------------------------------------------------------
+ONE-LINE SUMMARY FOR THE VIVA
+--------------------------------------------------------------------
+- Interface:    Movable (move/stop) + Reservable (reserve/release/isReserved).
+- Inheritance:  Vehicle (abstract) -> Car, EmergencyVehicle -> PoliceVehicle.
+- Polymorphism: List<Vehicle> base-type collections, dynamic dispatch when a
+                loop calls vehicle.beginStep()/move()/tickVisualMarkers(),
+                halt(Movable), and instanceof dispatch across the engine + GUI.

@@ -1,0 +1,16 @@
+=== Phase 1 Run Output ===
+Phase 1 (first-come curb parking; cars may wait in the live lane)
+
+Configuration : 2 lanes, length 70, 5 parking spots
+Cycles        : 4000
+
+Shared traffic scenario (recorded in Phase 1, replayed in Phase 2):
+  Recorded cars: 3585  (parking seekers: 3257)   emergencies: 0   over 4000 ticks
+  Scenario signature: 0x4F1AFE03F8BFD2D0   (identical signature = identical scenario)
+
+Total waiting-cycles : 3138
+Average speed        : 7.23
+Average congestion   : 0.3078
+Cars processed       : 276
+Redirected cars      : 31
+Avg parking usage    : 93.9% (0/5 spots free at end)

@@ -1,0 +1,26 @@
+==================================================
+  Phase 1  vs  Phase 2   (Roadside Parking)
+==================================================
+Scenario: 2 lanes, length 70, 5 parking spots, 4000 cycles
+
+Shared traffic scenario (recorded in Phase 1, replayed in Phase 2):
+  Recorded cars: 3585  (parking seekers: 3257)   emergencies: 0   over 4000 ticks
+  Scenario signature: 0x4F1AFE03F8BFD2D0   (identical signature = identical scenario)
+  -> Phase 2 was tested on the SAME recorded cars as Phase 1, not a new run.
+
+Metric                            Phase 1        Phase 2
+--------------------------     ----------     ----------
+Total waiting-cycles                 3138              0
+Average speed                        7.23          11.29
+Average congestion                 0.3078         0.3050
+Cars processed                        276            432
+Redirected cars                        31            204
+Avg parking usage                   93.9%          98.6%
+
+Improvement (Phase 2 vs Phase 1):
+  Improvement percentage (waiting): 100.0%
+  Congestion reduced by           : 0.9%
+  Average speed changed by        : +56.3%
+  Cars processed changed by       : +56.5%
+
+RESULT: On the same recorded scenario, Phase 2 reduced waiting AND did not worsen congestion. Managed parking is the better solution.
